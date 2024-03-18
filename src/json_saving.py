@@ -32,7 +32,6 @@ class JSONManager(AbstractFileManager):
         with open(self.filename, 'r', encoding='UTF-8') as file:
             return json.load(file)
 
-
     def delete_vacancy(self):
         """
         Полностью очищает файл

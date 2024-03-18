@@ -25,6 +25,6 @@ class AbstractFileManager(ABC):
         pass
 
     @abstractmethod
-    def delete_vacancy(self, vacancy):
+    def delete_vacancy(self):
         pass
 

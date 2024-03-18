@@ -15,7 +15,14 @@ class Vacancy:
     @staticmethod
     def check_salary(value):
         if isinstance(value, dict):
-            return f'От {value['from']} до {value['to']} {value['correny']}'
+            if value['from'] is None:
+                return f'До {value['to']} {value['currency']}'
+
+            elif value['to'] is None:
+                return f'От {value['from']} {value['currency']}'
+            else:
+                return f'От {value['from']} до {value['to']} {value['currency']}'
+
         else:
             return f"Зарплата не указана"
 
