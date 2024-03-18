@@ -1,37 +1,70 @@
-class Vacancy:
-    def __init__(self, name, description, salary, _url):
-        self.name = name
-        self.description = description
-        self.salary = salary
-        self._url = _url
+from colorama import *
 
-    def is_salary(self):
-        if self.salary is None:
-            return "Зарплата не указана"
+
+class Vacancy:
+    def __init__(self, name, area, requirement, responsibility, salary, experience, employer, url):
+        self.name = name
+        self.area = area
+        self.requirement = requirement
+        self.responsibility = responsibility
+        self.salary = self.check_salary(salary)
+        self.experience = experience
+        self.employer = employer
+        self._url = url
+
+    @staticmethod
+    def check_salary(value):
+        if isinstance(value, dict):
+            return f'От {value['from']} до {value['to']} {value['correnty']}'
         else:
-            return self.salary
+            return f"Зарплата не указана"
 
     def __lt__(self, other):
         if self.salary < other.salary:
-            pass
+            return True
+        return False
 
     def __eq__(self, other):
-        pass
+        if self.salary == other.salary:
+            return True
+        return False
 
-    @staticmethod
-    def from_dict(data):
+    @classmethod
+    def from_dict(cls, data):
         """
         Преобразование набора данных из JSON в список объектов
         :param data:
         :return:
         """
-        vacancy = []
         for value in data:
             name = value['name']
-            url = value['alternate_url']
-            area = value['area']
+            area = value['area']['name']
+            requirement = value['snippet']['requirement']
+            responsibility = value['snippet']['responsibility']
             salary = value['salary']
-            snippet = value["snippet"]
-            experience = value['experience']
-            vacancy.append(dict(name=name, url=url, area=area, salary=salary, snippet=snippet, experience=experience))
-        return vacancy
+            experience = value['experience']['name']
+            employer = value['employer']
+            url = value['alternate_url']
+            return cls(name=name, area=area, requirement=requirement, responsibility=responsibility, salary=salary,
+                       experience=experience, employer=employer, url=url)
+
+    def __str__(self):
+        """
+        Строковое отображение атрибутов класса для пользователя
+        :return:
+        """
+        return (f'Название вакансии: {Fore.CYAN}{self.name}{Fore.RESET}\n'
+                f'Город: {Fore.CYAN}{self.area}{Fore.RESET}\n'
+                f'Требования: {Fore.CYAN}{self.requirement}{Fore.RESET}\n'
+                f'Обязанности: {Fore.CYAN}{self.responsibility}{Fore.RESET}\n'
+                f'Зарплата: {Fore.CYAN}{self.salary}{Fore.RESET}\n'
+                f'Опыт работы: {Fore.CYAN}{self.experience}{Fore.RESET}\n'
+                f'Ссылка: {self._url}')
+
+    def __repr__(self):
+        """
+        Отображение информации о класса для разработчика
+        :return:
+        """
+        return (f'Имя класса: {self.__class__.__name__}. Атрибуты класса: ({self.name}, {self.area}, {self.requirement},'
+                f'{self.responsibility}, {self.salary}, {self.experience}, {self._url})')

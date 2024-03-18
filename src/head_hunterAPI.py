@@ -8,6 +8,9 @@ class HeadHunterAPI(AbstractAPI):
     """
 
     def __init__(self):
+        """
+        Конструктор по умолчанию имеет url адрес для работы с API запросом для вакансий с сайта hh.ru
+        """
         self.__base_url = "https://api.hh.ru/vacancies"
 
     def get_vacancies(self, search_query):
@@ -16,6 +19,13 @@ class HeadHunterAPI(AbstractAPI):
         :param search_query:
         :return: json object
         """
-        params = {"per_page": 100, "text": search_query, "page": 10}
-        response = requests.get(self.__base_url, params=params)
-        return response.json()["items"]
+        if search_query == '':
+            raise ValueError("Введите имя вакансии")
+        else:
+            params = {"per_page": 100, "text": search_query, "page": 10}
+            response = requests.get(self.__base_url, params=params)
+
+            if response.status_code != 200:
+                raise ConnectionError("Не удалось получить доступ к сайту")
+            else:
+                return response.json()["items"]

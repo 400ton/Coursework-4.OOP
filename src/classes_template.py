@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class AbstractAPI(ABC):
     """
-    Абстрактный класс для работы API сервиса с вакансиями
+    Абстрактный класс для работы API сервиса с вакансиями, является шаблоном для всех классов наследников
     """
 
     @abstractmethod
@@ -11,21 +11,20 @@ class AbstractAPI(ABC):
         pass
 
 
-class AbstractVacancy(ABC):
+class AbstractFileManager(ABC):
     """
-    Абстрактный класс который обязывает реализовать методы
-    для добавления вакансий в файл, получения данных из файла
-    по указанным критериям и удаления информации о вакансиях
+    Абстрактный класс для работы с файлом, является шаблоном для всех классов наследников
     """
 
     @abstractmethod
-    def add_data_to_dict(self, vacancy):
+    def add_vacancy(self, vacancy):
         pass
 
     @abstractmethod
-    def get_data_from_dict(self, keys):
+    def open_file(self):
         pass
 
     @abstractmethod
-    def del_data_dict(self):
+    def delete_vacancy(self, vacancy):
         pass
+
