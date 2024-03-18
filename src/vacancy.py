@@ -15,7 +15,7 @@ class Vacancy:
     @staticmethod
     def check_salary(value):
         if isinstance(value, dict):
-            return f'От {value['from']} до {value['to']} {value['correnty']}'
+            return f'От {value['from']} до {value['to']} {value['correny']}'
         else:
             return f"Зарплата не указана"
 
@@ -30,12 +30,8 @@ class Vacancy:
         return False
 
     @classmethod
-    def from_dict(cls, data):
-        """
-        Преобразование набора данных из JSON в список объектов
-        :param data:
-        :return:
-        """
+    def from_dict(cls, data: list):
+        vacancies = []
         for value in data:
             name = value['name']
             area = value['area']['name']
@@ -45,8 +41,10 @@ class Vacancy:
             experience = value['experience']['name']
             employer = value['employer']
             url = value['alternate_url']
-            return cls(name=name, area=area, requirement=requirement, responsibility=responsibility, salary=salary,
-                       experience=experience, employer=employer, url=url)
+            vacancies.append(
+                cls(name=name, area=area, requirement=requirement, responsibility=responsibility, salary=salary,
+                    experience=experience, employer=employer, url=url))
+        return vacancies
 
     def __str__(self):
         """
@@ -66,5 +64,6 @@ class Vacancy:
         Отображение информации о класса для разработчика
         :return:
         """
-        return (f'Имя класса: {self.__class__.__name__}. Атрибуты класса: ({self.name}, {self.area}, {self.requirement},'
-                f'{self.responsibility}, {self.salary}, {self.experience}, {self._url})')
+        return (
+            f'Имя класса: {self.__class__.__name__}. Атрибуты класса: ({self.name}, {self.area}, {self.requirement},'
+            f'{self.responsibility}, {self.salary}, {self.experience}, {self._url})')
