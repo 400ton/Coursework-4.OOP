@@ -1,3 +1,4 @@
+import os
 import json
 from src.classes_template import AbstractFileManager
 
@@ -38,3 +39,4 @@ class JSONManager(AbstractFileManager):
         :return:
         """
         open(self.filename, 'w').close()
+        os.remove(self.filename)

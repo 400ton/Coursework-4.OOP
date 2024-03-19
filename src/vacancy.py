@@ -5,26 +5,35 @@ class Vacancy:
     def __init__(self, name, area, requirement, responsibility, salary, experience, employer, url):
         self.name = name
         self.area = area
-        self.requirement = requirement
-        self.responsibility = responsibility
+        self.requirement = self.check(requirement)
+        self.responsibility = self.check(responsibility)
         self.salary = self.check_salary(salary)
         self.experience = experience
         self.employer = employer
         self._url = url
 
     @staticmethod
+    def check(value):
+        if value is None:
+            return f'Требования не указаны'
+        else:
+            return f'{value}'
+
+    @staticmethod
     def check_salary(value):
         if isinstance(value, dict):
             if value['from'] is None:
-                return f'До {value['to']} {value['currency']}'
+                return f'{value['to']} {value['currency']}'
 
             elif value['to'] is None:
-                return f'От {value['from']} {value['currency']}'
+                return f'{value['from']} {value['currency']}'
             else:
-                return f'От {value['from']} до {value['to']} {value['currency']}'
+                return f'{value['from']} - {value['to']} {value['currency']}'
 
         else:
             return f"Зарплата не указана"
+
+
 
     def __lt__(self, other):
         if self.salary < other.salary:
@@ -46,7 +55,7 @@ class Vacancy:
             responsibility = value['snippet']['responsibility']
             salary = value['salary']
             experience = value['experience']['name']
-            employer = value['employer']
+            employer = value['employer']['name']
             url = value['alternate_url']
             vacancies.append(
                 cls(name=name, area=area, requirement=requirement, responsibility=responsibility, salary=salary,
@@ -64,7 +73,8 @@ class Vacancy:
                 f'Обязанности: {Fore.CYAN}{self.responsibility}{Fore.RESET}\n'
                 f'Зарплата: {Fore.CYAN}{self.salary}{Fore.RESET}\n'
                 f'Опыт работы: {Fore.CYAN}{self.experience}{Fore.RESET}\n'
-                f'Ссылка: {self._url}')
+                f'Организация: {Fore.CYAN}{self.employer}{Fore.RESET}\n'
+                f'Ссылка: {self._url}\n')
 
     def __repr__(self):
         """
