@@ -15,7 +15,7 @@ class Vacancy:
     @staticmethod
     def check(value):
         if value is None:
-            return f'Требования не указаны'
+            return f'Отсутсвует'
         else:
             return f'{value}'
 
@@ -32,8 +32,6 @@ class Vacancy:
 
         else:
             return f"Зарплата не указана"
-
-
 
     def __lt__(self, other):
         if self.salary < other.salary:
